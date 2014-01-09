@@ -46,7 +46,8 @@ p.no-space {
   background: url("../img/background.jpg");
   background-repeat:no-repeat;
   background-position:center;
-  background-color:#f4f4f4;
+  /*background-color:#f4f4f4;*/
+  background-color:rgb(166,166,166)
 }
 
 /*
