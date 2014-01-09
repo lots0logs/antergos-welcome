@@ -1,8 +1,9 @@
 #! /usr/bin/python2
 # -*- coding:utf-8 -*-
 #
-# Copyright 2013 "Manjaro Linux" <support@manjaro.org>
 # Copyright 2012-2013 "Korora Project" <dev@kororaproject.org>
+# Copyright 2013 "Manjaro Linux" <support@manjaro.org>
+# Copyright 2014 Antergos
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the temms of the GNU General Public License as published by
@@ -40,16 +41,16 @@ class WelcomeConfig(object):
       self._arch = '32-bit'
 
     # store we are a live CD session
-    self._live = ( os.path.exists( '/bootmnt/manjaro' ) )
+    self._live = ( os.path.exists( '/bootmnt/antergos' ) )
 
     # store full path to our binary
     self._welcome_bin_path = os.path.abspath(inspect.getfile(inspect.currentframe()))
 
     # store directory to our welcome configuration
-    self._config_dir = os.path.expanduser('~/.config/manjaro/welcome/')
+    self._config_dir = os.path.expanduser('~/.config/antergos/welcome/')
 
     # store full path to our autostart symlink
-    self._autostart_path = os.path.expanduser('~/.config/autostart/manjaro-welcome.desktop')
+    self._autostart_path = os.path.expanduser('~/.config/autostart/antergos-welcome.desktop')
 
     # ensure our config directory exists
     if not os.path.exists( self._config_dir ):
@@ -74,7 +75,7 @@ class WelcomeConfig(object):
     if( state and not os.path.exists( self._autostart_path ) ):
       # create the autostart symlink
       try:
-        os.symlink( '/usr/share/applications/manjaro-welcome.desktop', self._autostart_path )
+        os.symlink( '/usr/share/applications/antergos-welcome.desktop', self._autostart_path )
       except OSError, e:
         pass
     elif( not state and os.path.exists( self._autostart_path ) ):
@@ -92,7 +93,7 @@ class WelcomeConfig(object):
     return self._live
 
 
-class ManjaroAppView(WebKit.WebView):
+class AppView(WebKit.WebView):
   def __init__(self):
     WebKit.WebView.__init__(self)
 
@@ -169,7 +170,7 @@ class ManjaroAppView(WebKit.WebView):
       subprocess.Popen(['sudo','live-installer'])
 
     elif( uri == 'install-cli' ):
-      subprocess.Popen(['manjaro-welcome-terminal','sudo setup'])
+      subprocess.Popen(['antergos-welcome-terminal','sudo setup'])
 
     elif( uri == 'close' ):
       Gtk.main_quit();
@@ -197,11 +198,11 @@ class WelcomeApp(object):
     if( os.path.exists( os.path.join(self._location, 'data/' ) ) ):
       print('Using relative path for data source. Non-production testing.')
       self._data_path = os.path.join(self._location, 'data/')
-    elif( os.path.exists('/usr/share/manjaro-welcome/') ):
-      print('Using /usr/share/manjaro-welcome/ path.')
-      self._data_path = '/usr/share/manjaro-welcome/'
+    elif( os.path.exists('/usr/share/antergos-welcome/') ):
+      print('Using /usr/share/antergos-welcome/ path.')
+      self._data_path = '/usr/share/antergos-welcome/'
     else:
-      print('Unable to source the manjaro-welcome data directory.')
+      print('Unable to source the antergos-welcome data directory.')
       sys.exit(1)
 
     self._build_app()
@@ -210,12 +211,15 @@ class WelcomeApp(object):
     # build window
     w = Gtk.Window()
     w.set_position(Gtk.WindowPosition.CENTER)
-    w.set_wmclass('Manjaro Welcome', 'Manjaro Welcome')
-    w.set_title('Manjaro Welcome')
+    w.set_wmclass('Antergos Welcome', 'Antergos Welcome')
+    w.set_title('Antergos Welcome')
     w.set_size_request(768, 496)
 
+    icon_dir = os.path.join(self._data_path, 'img', 'antergos-icon.png')
+    w.set_icon_from_file(icon_dir)
+
     # build webkit container
-    mv = ManjaroAppView()
+    mv = AppView()
 
     # load our index file
     file = os.path.abspath( os.path.join( self._data_path, 'index.html') )
