@@ -5,6 +5,7 @@ antergos-welcome
 
 Antergos welcome screen
 
-* python2
+* python3
 * gtk
-* python2-simplejson
+* python-simplejson
+

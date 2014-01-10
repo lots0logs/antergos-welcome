@@ -1,4 +1,4 @@
-#! /usr/bin/python2
+#! /usr/bin/python3
 # -*- coding:utf-8 -*-
 #
 # Copyright 2012-2013 "Korora Project" <dev@kororaproject.org>
@@ -27,7 +27,8 @@ import json
 import signal
 import subprocess
 import sys
-import urllib
+import urllib.request
+import urllib.error
 import webbrowser
 
 from simplejson import dumps as to_json
@@ -150,8 +151,8 @@ class AppView(WebKit.WebView):
 
         self.l_uri = uri
 
-        page = urllib.urlopen(uri)
-        frame.load_string(page.read(),"text/html","iso-8859-15",page.geturl())
+        page = urllib.request.urlopen(uri)
+        frame.load_string(page.read().decode(), "text/html", "iso-8859-15", page.geturl())
         pol_dec.ignore()
         return True
 
@@ -212,7 +213,7 @@ class WelcomeApp(object):
 
         # load our index file
         file = os.path.abspath( os.path.join( self._data_path, 'index.html') )
-        uri = 'file://' + urllib.pathname2url(file)
+        uri = 'file://' + urllib.request.pathname2url(file)
         mv.open(uri)
 
         # build scrolled window widget and add our appview container
