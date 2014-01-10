@@ -1,3 +1,5 @@
+![screenshot]karasu.github.com/antergos-welcome/screenshot.png
+
 antergos-welcome
 ================
 
